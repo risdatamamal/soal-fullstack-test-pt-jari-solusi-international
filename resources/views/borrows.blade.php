@@ -46,6 +46,7 @@
                                 <tr>
                                     <th>{{ __('User') }}</th>
                                     <th>{{ __('Book') }}</th>
+                                    <th>{{ __('Borrow Date') }}</th>
                                     <th>{{ __('Action') }}</th>
                                 </tr>
                             </thead>

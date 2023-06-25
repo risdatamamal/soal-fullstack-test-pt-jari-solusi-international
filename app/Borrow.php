@@ -15,7 +15,7 @@ class Borrow extends Model
         'book_id', 'user_id', 'borrow_date'
     ];
 
-    protected $with = ['event', 'user'];
+    protected $with = ['book', 'user'];
 
     public function book()
     {

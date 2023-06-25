@@ -93,7 +93,6 @@ Route::group(['middleware' => 'auth'], function () {
     // get permissions
     Route::get('get-role-permissions-badge', [PermissionController::class, 'getPermissionBadgeByRole']);
 
-
     // permission examples
     Route::get('/permission-example', function () {
         return view('permission-example');

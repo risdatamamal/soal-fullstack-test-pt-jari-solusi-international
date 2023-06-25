@@ -510,6 +510,7 @@
                     orderable: false,
                     searchable: true,
                 },
+                { data: "borrow_date", name: "borrow_date" },
                 //only those have manage_user permission will get access
                 { data: "action", name: "action" },
             ],

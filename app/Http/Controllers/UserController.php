@@ -35,7 +35,7 @@ class UserController extends Controller
 
     public function getUserList(Request $request)
     {
-        
+
         $data  = User::get();
 
         return Datatables::of($data)
@@ -80,7 +80,6 @@ class UserController extends Controller
         {
             $roles = Role::pluck('name','id');
             return view('create-user', compact('roles'));
-
         }catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -90,14 +89,14 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // create user 
+        // create user
         $validator = Validator::make($request->all(), [
             'name'     => 'required | string ',
             'email'    => 'required | email | unique:users',
             'password' => 'required | confirmed',
             'role'     => 'required'
         ]);
-        
+
         if($validator->fails()) {
             return redirect()->back()->withInput()->with('error', $validator->messages()->first());
         }
@@ -113,7 +112,7 @@ class UserController extends Controller
             // assign new role to the user
             $user->syncRoles($request->role);
 
-            if($user){ 
+            if($user){
                 return redirect('users')->with('success', 'New user created!');
             }else{
                 return redirect('users')->with('error', 'Failed to create new user! Try again.');
@@ -162,13 +161,13 @@ class UserController extends Controller
                 'password' => 'required | confirmed'
             ]);
         }
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withInput()->with('error', $validator->messages()->first());
         }
 
         try{
-            
+
             $user = User::find($request->id);
 
             $update = $user->update([
@@ -204,5 +203,14 @@ class UserController extends Controller
         }else{
             return redirect('users')->with('error', 'User not found');
         }
+    }
+
+    public function getUserByName(Request $request)
+    {
+        if ($request->id) {
+            $user = User::find($request->id);
+        }
+
+        return $user;
     }
 }

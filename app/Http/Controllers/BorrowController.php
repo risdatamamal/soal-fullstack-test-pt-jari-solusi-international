@@ -43,8 +43,8 @@ class BorrowController extends Controller
     public function create()
     {
         try {
-            $users = User::all();
-            $books = Book::all();
+            $users = User::pluck('name', 'id');
+            $books = Book::pluck('name', 'id');
 
             return view('create-borrow', compact('users', 'books'));
         } catch (\Exception $e) {
@@ -56,8 +56,8 @@ class BorrowController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'book_id'     => 'required | integer ',
-            // 'user_id'     => 'required | integer ',
+            'book'     => 'required',
+            'user'     => 'required',
             // 'borrow_date' => 'required | date ',
         ]);
 
@@ -66,8 +66,8 @@ class BorrowController extends Controller
         }
         try {
             $borrow = Borrow::create([
-                // 'book_id'     => $request->book_id,
-                // 'user_id'     => $request->user_id,
+                'book_id'     => $request->book,
+                'user_id'     => $request->user,
                 // 'borrow_date' => $request->borrow_date,
             ]);
 
@@ -85,10 +85,16 @@ class BorrowController extends Controller
     public function edit($id)
     {
         try {
-            $book  = Book::find($id);
+            $borrow  = Borrow::with('books', 'users')->find($id);
 
-            if ($book) {
-                return view('book-edit', compact('book'));
+            if ($borrow) {
+                $borrow_user = $borrow->user->first();
+                $borrow_book = $borrow->book->first();
+
+                $users = User::pluck('name', 'id');
+                $books = Book::pluck('name', 'id');
+
+                return view('borrow-edit', compact('borrow', 'users', 'books', 'borrow_book', 'borrow_user'));
             } else {
                 return redirect('404');
             }
@@ -101,8 +107,9 @@ class BorrowController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'       => 'required',
-            'name'     => 'required | string ',
+            'book'     => 'required',
+            'user'     => 'required',
+            // 'borrow_date' => 'required | date ',
         ]);
 
         if ($validator->fails()) {
@@ -111,10 +118,12 @@ class BorrowController extends Controller
 
         try {
 
-            $book = Book::find($request->id);
+            $borrow = Borrow::find($request->id);
 
-            $book->update([
-                'name' => $request->name,
+            $borrow->update([
+                'book_id'     => $request->book,
+                'user_id'     => $request->user,
+                // 'borrow_date' => $request->borrow_date,
             ]);
 
             return redirect()->back()->with('success', 'Book information updated succesfully!');

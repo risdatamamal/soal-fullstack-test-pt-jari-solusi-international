@@ -25,7 +25,7 @@
                                 <a href="{{ url('/') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Book') }}</a>
+                                <a href="#">{{ __('Borrow') }}</a>
                             </li>
                             <li class="breadcrumb-item">
                                 <!-- clean unescaped data is to avoid potential XSS risk -->
@@ -51,7 +51,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="user">{{ __('User') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('user', $users, $borrow_user->id ?? '', [
+                                        {!! Form::select('user', $users, $borrow->user->id ?? '', [
                                             'class' => 'form-control select2',
                                             'placeholder' => 'Select User',
                                             'id' => 'user',
@@ -62,7 +62,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="book">{{ __('Book') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('book', $books, $borrow_book->id ?? '', [
+                                        {!! Form::select('book', $books, $borrow->book->id ?? '', [
                                             'class' => 'form-control select2',
                                             'placeholder' => 'Select Book',
                                             'id' => 'book',
@@ -72,12 +72,18 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label for="book">{{ __('Borrow Date') }}<span class="text-red">*</span></label>
+                                        <input type="date" id="borrow_date" name="borrow_date"
+                                            value="{{ $borrow->borrow_date }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <button type="submit"
                                             class="btn btn-primary form-control-right">{{ __('Update') }}</button>
                                     </div>
                                 </div>
                             </div>
-
                         </form>
                     </div>
                 </div>

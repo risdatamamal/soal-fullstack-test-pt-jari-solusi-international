@@ -58,7 +58,7 @@ class BorrowController extends Controller
         $validator = Validator::make($request->all(), [
             'book'     => 'required',
             'user'     => 'required',
-            // 'borrow_date' => 'required | date ',
+            'borrow_date' => 'required | date ',
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +68,7 @@ class BorrowController extends Controller
             $borrow = Borrow::create([
                 'book_id'     => $request->book,
                 'user_id'     => $request->user,
-                // 'borrow_date' => $request->borrow_date,
+                'borrow_date' => $request->borrow_date,
             ]);
 
             if ($borrow) {
@@ -85,16 +85,13 @@ class BorrowController extends Controller
     public function edit($id)
     {
         try {
-            $borrow  = Borrow::with('books', 'users')->find($id);
+            $borrow  = Borrow::with('book', 'user')->find($id);
 
             if ($borrow) {
-                $borrow_user = $borrow->user->first();
-                $borrow_book = $borrow->book->first();
-
                 $users = User::pluck('name', 'id');
                 $books = Book::pluck('name', 'id');
 
-                return view('borrow-edit', compact('borrow', 'users', 'books', 'borrow_book', 'borrow_user'));
+                return view('borrow-edit', compact('borrow', 'users', 'books'));
             } else {
                 return redirect('404');
             }
@@ -109,7 +106,7 @@ class BorrowController extends Controller
         $validator = Validator::make($request->all(), [
             'book'     => 'required',
             'user'     => 'required',
-            // 'borrow_date' => 'required | date ',
+            'borrow_date' => 'required | date ',
         ]);
 
         if ($validator->fails()) {
@@ -123,7 +120,7 @@ class BorrowController extends Controller
             $borrow->update([
                 'book_id'     => $request->book,
                 'user_id'     => $request->user,
-                // 'borrow_date' => $request->borrow_date,
+                'borrow_date' => $request->borrow_date,
             ]);
 
             return redirect()->back()->with('success', 'Book information updated succesfully!');
@@ -136,12 +133,12 @@ class BorrowController extends Controller
 
     public function delete($id)
     {
-        $book   = Book::find($id);
-        if ($book) {
-            $book->delete();
-            return redirect('books')->with('success', 'Book removed!');
+        $borrow   = Borrow::find($id);
+        if ($borrow) {
+            $borrow->delete();
+            return redirect('borrows')->with('success', 'Borrow removed!');
         } else {
-            return redirect('books')->with('error', 'Book not found');
+            return redirect('borrows')->with('error', 'Borrow not found');
         }
     }
 }

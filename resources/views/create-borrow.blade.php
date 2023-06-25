@@ -70,6 +70,13 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label for="book">{{ __('Borrow Date') }}<span class="text-red">*</span></label>
+                                        <input type="date" id="borrow_date" name="borrow_date"
+                                            value="{{ old('borrow_date') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
                                         <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
                                     </div>
                                 </div>

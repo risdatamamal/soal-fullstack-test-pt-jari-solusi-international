@@ -17,8 +17,7 @@ class CreateBorrowsTable extends Migration
             $table->id();
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->unique(['book_id', 'user_id']);
-            $table->timestamps('borrow_date');
+            $table->date('borrow_date')->nullable();
 
             $table->timestamps();
         });

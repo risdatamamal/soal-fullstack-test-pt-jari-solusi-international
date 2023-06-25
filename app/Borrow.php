@@ -28,7 +28,7 @@ class Borrow extends Model
     }
 
     protected $casts = [
-        'borrow_date' => 'date:Y-m-d',
+        'borrow_date' => 'datetime:Y-m-d h:m:s',
         'created_at' => 'datetime:Y-m-d',
         'updated_at' => 'datetime:Y-m-d'
     ];
